@@ -107,6 +107,16 @@ const addPersonListener = function () {
         });
     });
 };
+const appendMessage = function(msg) {
+    $('#chat-messages').append('<div class="message right">\n' +
+        '            <img src="' + app.user.avatar + '" />\n' +
+        '                <div class="bubble">\n' +
+        msg +
+        '                    <div class="corner"></div>\n' +
+        '                </div>\n' +
+        '            </div>');
+};
+
 var app = new Vue({
 	el: '#chatbox',
 	created: function () {
@@ -132,12 +142,6 @@ var app = new Vue({
         typing: ""
 	},
 	methods: {
-		getMessage: function () {
-			console.log(json.bots.calendar.messages[0]);
-		},
-		createMessage: function() {
-
-		},
 		click: function (e) {
             addPersonListener();
         },
@@ -188,12 +192,3 @@ Vue.component('message', {
     '            </div>'
 });
 
-const appendMessage = function(msg) {
-    $('#chat-messages').append('<div class="message right">\n' +
-        '            <img src="' + app.user.avatar + '" />\n' +
-        '                <div class="bubble">\n' +
-         msg +
-        '                    <div class="corner"></div>\n' +
-        '                </div>\n' +
-        '            </div>');
-}
