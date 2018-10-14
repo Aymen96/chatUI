@@ -3,11 +3,11 @@ $(document).ready(function(){
   setTimeout(function (){
       var preloadbg = document.createElement("img");
       preloadbg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/timeline1.png";
-      addFriendListner();
+      addBotListener();
   },500);
 });
 
-const addFriendListner = function () {
+const addBotListener = function () {
     $(".friend.bot").each(function(){
         $(this).click(function(){
             var childOffset = $(this).offset();
@@ -59,13 +59,58 @@ const addFriendListner = function () {
         });
     });
 };
+const addPersonListener = function () {
+    $(".friend.person").each(function(){
+        $(this).click(function(){
+            var childOffset = $(this).offset();
+            var parentOffset = $(this).parent().parent().offset();
+            var childTop = childOffset.top - parentOffset.top;
+            var clone = $(this).find('img').eq(0).clone();
+            var top = childTop+12+"px";
+
+            setTimeout(function(){$("#profile p").addClass("animate");$("#profile").addClass("animate");}, 100);
+            setTimeout(function(){
+                $("#chat-messages").addClass("animate");
+                $('.cx, .cy').addClass('s1');
+                setTimeout(function(){$('.cx, .cy').addClass('s2');}, 100);
+                setTimeout(function(){$('.cx, .cy').addClass('s3');}, 200);
+            }, 150);
+            var name = $(this).find("p strong").html();
+            var email = $(this).find("p span").html();
+            $("#profile p").html(name);
+            $("#profile span").html(email);
+
+            $('#chat-messages .message').remove();
+            $('#chat-messages').append('<div  class="message">\n' +
+                '                <img v-bind:src="chat_partner.avatar" />\n' +
+                '                <div class="bubble">\nHello, I am ' + name +
+                '                    <div class="corner"></div>\n' +
+                '                </div>\n' +
+                '            </div>');
+
+            $(".message").not(".right").find("img").attr("src", $(clone).attr("src"));
+            $('#friendslist').fadeOut();
+            $('#chatview').fadeIn();
+
+
+            $('#close').unbind("click").click(function(){
+                $("#chat-messages, #profile, #profile p").removeClass("animate");
+                $('.cx, .cy').removeClass("s1 s2 s3");
+
+
+                setTimeout(function(){
+                    $('#chatview').fadeOut();
+                    $('#friendslist').fadeIn();
+                }, 50);
+            });
+
+        });
+    });
+};
 var app = new Vue({
 	el: '#chatbox',
 	created: function () {
 		console.log("Vuejs App created at " + new Date().toLocaleDateString());
-	},
-	updated: function () {
-		console.log("Updated");
 	},
 	data: {
 		message: 'Hello Vue!',
@@ -83,7 +128,8 @@ var app = new Vue({
 		},
 		bots: "",
 		friends: "",
-        query: ""
+        query: "",
+        typing: ""
 	},
 	methods: {
 		getMessage: function () {
@@ -93,7 +139,7 @@ var app = new Vue({
 
 		},
 		click: function (e) {
-
+            addPersonListener();
         },
         search: function() {
             var obj = {};
@@ -112,8 +158,18 @@ var app = new Vue({
                 }
             }
             this.friends = obj;
-            setTimeout(addFriendListner(),1000);
-		}
+            setTimeout(addBotListener(),1000);
+		},
+        sendMessage: function() {
+            const msg = this.$refs.mymsg.value;
+            this.$refs.mymsg.value = "";
+            appendMessage(msg)
+        },
+        showTyper: function() {
+		    const init = this.typing;
+            this.typing = this.user.name.split(' ')[0] + " is typing ...";
+            setTimeout(function() {if(init === app.typing) app.typing = ""},2000);
+        }
 	}
 });
 var json;
@@ -131,3 +187,13 @@ Vue.component('message', {
     '                </div>\n' +
     '            </div>'
 });
+
+const appendMessage = function(msg) {
+    $('#chat-messages').append('<div class="message right">\n' +
+        '            <img src="' + app.user.avatar + '" />\n' +
+        '                <div class="bubble">\n' +
+         msg +
+        '                    <div class="corner"></div>\n' +
+        '                </div>\n' +
+        '            </div>');
+}

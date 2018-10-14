@@ -19,7 +19,7 @@
 
         <div id="friends" >
             <div v-for="(bot, key) in bots">
-                <div class="friend bot" v-on:click="click" v-bind:id="key">
+                <div class="friend bot"  v-bind:id="key">
                     <img v-bind:title="bot.name" v-bind:src="bot.avatar" />
                     <p>
                         <strong>{{bot.name}}</strong><br>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div v-for="(friend, key) in friends">
-                <div class="friend">
+                <div class="friend person" v-on:click="click">
                     <img v-bind:src="friend.avatar" />
                     <p>
                         <strong>{{friend.name}}</strong>
@@ -89,13 +89,13 @@
                     <span>1 Min</span>
                 </div>
             </div>-->
-            
+            <span class="typing-span">{{typing}}</span>
         </div>
-    	
-        <div id="sendmessage">
-        	<input type="text" placeholder="Write message..." />
+
+        <form id="sendmessage" v-on:submit.prevent="sendMessage">
+        	<input type="text" ref="mymsg" placeholder="Write message..." v-on:input="showTyper"/>
             <button id="send"></button>
-        </div>
+        </form>
     
     </div>        
 </div>

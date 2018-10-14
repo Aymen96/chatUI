@@ -172,7 +172,7 @@ body {
 	opacity:0;
 	margin-top:30px;
 	width:290px;
-	height:290px;
+	height:370px;
 	overflow-y:scroll;	
 	overflow-x:hidden;
 	padding-right: 20px;
@@ -198,7 +198,6 @@ body {
 #chat-messages div.message{
 	padding:0 0 10px 58px;
 	clear:both;
-	margin-bottom:45px;
 }
 #chat-messages div.message.right{
 	  padding: 0 58px 10px 0;
@@ -227,6 +226,7 @@ body {
 	color:#8495a3;
 	position:relative;
 	float:left;
+	margin-bottom: 6px;
 }
 #chat-messages div.message.right .bubble{
 	float:right;
@@ -270,6 +270,7 @@ div.message.right .corner{
 	font-size:14px;
 	font-family:"Open Sans", sans-serif; 
 	font-weight:400;
+	width: 215px;
 	color:#aab8c2;
 }
 #sendmessage input:focus{
@@ -377,4 +378,13 @@ div.message.right .corner{
 #chatview, #sendmessage { 
 overflow:hidden; 
 border-radius:6px; 
+}
+#chat-messages {
+	position:relative;
+}
+.typing-span {
+	position:absolute;
+	left: 8px;
+	bottom: 6px;
+	color: gray;
 }
